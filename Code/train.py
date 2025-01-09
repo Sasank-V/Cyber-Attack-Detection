@@ -134,16 +134,13 @@ class CyberAttackDetector:
         return report, cm, predictions
 
 def main():
-    # File paths for all datasets
-    file_paths = [f'../Datasets/Network_dataset_{i}.csv'
-        for i in range(1,24)
-    ]
-    
-    # Load and combine all datasets
-    print("Loading and combining data from multiple files...")
-    dataframes = [pd.read_csv(file, low_memory=False) for file in file_paths]
-    df = pd.concat(dataframes, ignore_index=True)
-    
+   # Path to the combined dataset
+    combined_file_path = '../Datasets/full_network_dataset.csv'
+
+    # Load the combined dataset
+    print("Loading the combined dataset...")
+    df = pd.read_csv(combined_file_path, low_memory=False)
+
     # Check the combined dataset size
     print(f"Combined dataset contains {df.shape[0]} rows and {df.shape[1]} columns.")
     
