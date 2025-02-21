@@ -1,6 +1,7 @@
 Datasets
 Test Dataset
 Code/detection_reports
+Code/cyber_attack_model.joblib
 */__pycache__
 Defense
 venv

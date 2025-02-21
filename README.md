@@ -156,8 +156,8 @@ To determine the necessary actions based on the attack type and its severity, us
 from defense import get_defense_actions
 
 # Example usage:
-attack_type = "DoS"  # Replace with the predicted attack type
-severity = 5         # Severity can be defined based on your risk assessment
+attack_type = "doS"  # Replace with the predicted attack type
+severity = "low"        # Severity can be defined based on your risk assessment
 actions = get_defense_actions(attack_type, severity)
 print("Recommended Defense Actions:", actions)
 ```

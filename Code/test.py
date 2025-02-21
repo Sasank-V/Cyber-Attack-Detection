@@ -9,9 +9,12 @@ import json
 from datetime import datetime
 import os
 
-# Replace this your own Severity Function
+# Import transformation function
+from transform import transform_real_time_data
+
+# Replace this with your own Severity Function
 def get_severity_level(severity_score: float) -> str:
-    #Convert severity score to level
+    # Convert severity score to level
     if severity_score >= 0.7:
         return 'high'
     elif severity_score >= 0.4:
@@ -19,7 +22,6 @@ def get_severity_level(severity_score: float) -> str:
     return 'low'
 
 def write_to_file(detections: list, filename: str) -> None:
-
     with open(filename, 'w') as f:
         # Write header
         f.write("Cyber Attack Detection and Defense Report\n")
@@ -45,7 +47,6 @@ def write_to_file(detections: list, filename: str) -> None:
             f.write("\n" + "="*50 + "\n\n")
 
 def process_and_defend(detector: CyberAttackDetector, data: pd.DataFrame) -> None:
-
     # Select only the features used by the model
     available_features = [f for f in detector.features_to_use if f in data.columns]
     X = data[available_features]
@@ -110,15 +111,39 @@ def main():
         detector = model_components['detector']
         print("Model loaded successfully!")
         
-        # Load your test data
-        print("\nLoading test data...")
-        test_data = pd.read_csv('../Datasets/training_data_sample.csv', low_memory=False) # Set your test dataset path 
-        print(f"Loaded test data with shape: {test_data.shape}")
-        
-        # Process data and implement defense actions
-        print("\nProcessing data and determining defense actions...")
-        process_and_defend(detector, test_data)
-        
+        # Example Real-time data input
+        print("\nFetching real-time data...")
+        real_time_input = {
+            "Protocol type ": "TCP",
+            "Service": "HTTP",
+            "Session duration": 30,
+            "Connection type (secure/non-secure)": "S1",
+            "Source bytes": 200,
+            "Destination bytes": 150,
+            "Number of packets sent": 5,
+            "Number of packets received": 3,
+            "Source port": 443,
+            "Destination port": 8080,
+            "HTTP response codes": 200,
+            "HTTP request patterns": 2,
+            "DNS queries performed": 1,
+            "DNS query response time": 100,
+            "Suspicious DNS responses": False,
+            "Secure Socket Layer (SSL) usage": True,
+            "SSL/TLS handshake status": False,
+            "Missed bytes": 0,
+            "Weird notice": False
+        }
+
+        # Transform real-time data into model-compatible format
+        print("\nTransforming real-time data...")
+        transformed_data = transform_real_time_data(real_time_input)
+        print(f"Transformed data: {transformed_data.to_dict(orient='records')}")
+
+        # Process transformed data and implement defense actions
+        print("\nProcessing real-time data and determining defense actions...")
+        process_and_defend(detector, transformed_data)
+
     except FileNotFoundError as e:
         print(f"Error: Required file not found - {str(e)}")
     except Exception as e:
